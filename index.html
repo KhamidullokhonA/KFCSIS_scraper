@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FIU Faculty Directory</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>FIU SCIS Faculty Directory</h1>
+
+        <p>
+            Faculty information retrieved from the FIU SCIS faculty directory.
+        </p>
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Search faculty..."
+        >
+
+        <select id="titleFilter">
+            <option value="all">All</option>
+            <option value="Professor">Professor</option>
+            <option value="Associate Professor">Associate Professor</option>
+            <option value="Assistant Professor">Assistant Professor</option>
+        </select>
+
+        <p id="status">Loading faculty...</p>
+
+        <div id="facultyList"></div>
+
+    </div>
+
+    <script>
+
+        let faculty = [];
+
+        async function loadFaculty() {
+
+            const response = await fetch("faculty.json");
+
+            faculty = await response.json();
+
+            displayFaculty(faculty);
+        }
+
+
+        function displayFaculty(data) {
+
+            const container = document.getElementById("facultyList");
+
+            container.innerHTML = "";
+
+            document.getElementById("status").textContent =
+                `${data.length} faculty members`;
+
+            data.forEach(person => {
+
+                const card = document.createElement("div");
+
+                card.className = "faculty-card";
+
+                card.innerHTML = `
+                    <h2>${person.Name}</h2>
+                    <p>${person.Title}</p>
+
+                    <a href="${person.URL}" target="_blank">
+                        View Profile
+                    </a>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+
+        function filterFaculty() {
+
+            const search =
+                document
+                    .getElementById("search")
+                    .value
+                    .toLowerCase();
+
+            const title =
+                document.getElementById("titleFilter").value;
+
+            const filtered = faculty.filter(person => {
+
+                const matchesSearch =
+                    person.Name.toLowerCase().includes(search);
+
+                const matchesTitle =
+                    title === "all" ||
+                    person.Title.includes(title);
+
+                return matchesSearch && matchesTitle;
+            });
+
+            displayFaculty(filtered);
+        }
+
+
+        document
+            .getElementById("search")
+            .addEventListener("input", filterFaculty);
+
+        document
+            .getElementById("titleFilter")
+            .addEventListener("change", filterFaculty);
+
+
+        loadFaculty();
+
+    </script>
+
+</body>
+
+</html>

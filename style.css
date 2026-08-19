@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+input,
+select {
+    padding: 12px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+.faculty-card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+.faculty-card h2 {
+    margin-top: 0;
+}
+
+.faculty-card a {
+    text-decoration: none;
+}
